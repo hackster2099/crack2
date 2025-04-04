@@ -6,7 +6,9 @@
 
 const int PASS_LEN = 20;        // Maximum any password will be
 const int HASH_LEN = 33;        // Length of MD5 hash strings
-
+int counter;
+char hashAlz [33];
+int stats = 1;
 
 // Given a target plaintext word, use it to try to find
 // a matching hash in the hashFile.
@@ -14,24 +16,56 @@ const int HASH_LEN = 33;        // Length of MD5 hash strings
 char * tryWord(char * plaintext, char * hashFilename)
 {
     // Hash the plaintext
+    char *textHash = md5(plaintext, strlen(plaintext));
 
     // Open the hash file
+    FILE *hashFile = fopen(hashFilename, "r");
+
+    if(hashFile == NULL){
+
+        printf("Could not open the File");
+        exit(1);
+
+    }
 
     // Loop through the hash file, one line at a time.
+    while(!feof(hashFile) ){
 
+        if(fgets(hashAlz, 33, hashFile) != NULL){
+
+            char *nl = strchr(hashAlz, '\n'); 
+            if (nl) {
+
+                *nl = '\0';
+
+            }
+
+            stats = strcmp(textHash, hashAlz);
+
+            if(stats == 0){
+
+                printf("%s  %s", hashAlz, textHash);
+                
+                break;
+
+            }
+
+
+        }
+
+
+    }
     // Attempt to match the hash from the file to the
     // hash of the plaintext.
 
     // If there is a match, you'll return the hash.
     // If not, return NULL.
 
-    // Before returning, do any needed cleanup:
-    //   Close files?
-    //   Free memory?
+    free(textHash);
+    fclose(hashFile);
 
-    // Modify this line so it returns the hash
-    // that was found, or NULL if not found.
-    return "0123456789abcdef0123456789abcdef";
+    return NULL;
+
 }
 
 
