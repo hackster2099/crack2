@@ -45,7 +45,6 @@ char * tryWord(char * plaintext, char * hashFilename)
             if(stats == 0){
 
                 printf("%s  %s", hashAlz, textHash);
-                
                 break;
 
             }
