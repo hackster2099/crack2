@@ -10,6 +10,9 @@ int counter;
 char hashAlz [33];
 int stats = 1;
 
+
+char another [20];
+
 // Given a target plaintext word, use it to try to find
 // a matching hash in the hashFile.
 // Get this function working first!
@@ -44,11 +47,17 @@ char * tryWord(char * plaintext, char * hashFilename)
 
             if(stats == 0){
 
-                printf("%s  %s", hashAlz, textHash);
+                printf("%s  %s\n", hashAlz, plaintext);
                 break;
 
             }
 
+            else{
+
+                printf("\nNothing was Found");
+                return 0;
+
+            }
 
         }
 
@@ -62,27 +71,49 @@ char * tryWord(char * plaintext, char * hashFilename)
 
     free(textHash);
     fclose(hashFile);
-
-    return NULL;
+    return 0;
 
 }
 
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]){
+
     if (argc < 3) 
     {
         fprintf(stderr, "Usage: %s hash_file dict_file\n", argv[0]);
         exit(1);
     }
 
+    FILE *dictionary = fopen(argv[2], "r");
+
+    while(!feof(dictionary)){
+
+        if(fgets(another, 20, dictionary) != NULL){
+
+            char *nl = strchr(hashAlz, '\n'); 
+            if (nl) {
+
+                *nl = '\0';
+
+            }
+
+            tryWord(another, argv[1]);
+            
+        }
+
+    }
+
+    fclose(dictionary);
+
+
+}
     // These two lines exist for testing. When you have
     // tryWord working, it should display the hash for "hello",
     // which is 5d41402abc4b2a76b9719d911017c592.
     // Then you can remove these two lines and complete the rest
     // of the main function below.
-    char *found = tryWord("hello", "hashes00.txt");
-    printf("%s %s\n", found, "hello");
+    //char *found = tryWord("hello", "hashes00.txt");
+    //printf("%s %s\n", found, "hello");
 
 
     // Open the dictionary file for reading.
@@ -95,9 +126,9 @@ int main(int argc, char *argv[])
     //   5d41402abc4b2a76b9719d911017c592 hello
     
     // Close the dictionary file.
-
+    //fclose(hashFile);
+    //fclose(dictionary);
     // Display the number of hashes that were cracked.
     
     // Free up any malloc'd memory?
-}
 
