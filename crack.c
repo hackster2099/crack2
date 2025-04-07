@@ -51,14 +51,7 @@ char * tryWord(char * plaintext, char * hashFilename)
 
             }
 
-            else{
-
-                return 0;
-
-            }
-
         }
-
 
     }
 
