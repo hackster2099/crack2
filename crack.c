@@ -11,7 +11,7 @@ char hashAlz [33];
 int stats = 1;
 
 
-char another [20];
+char word [20];
 
 // Given a target plaintext word, use it to try to find
 // a matching hash in the hashFile.
@@ -48,13 +48,11 @@ char * tryWord(char * plaintext, char * hashFilename)
             if(stats == 0){
 
                 printf("%s  %s\n", hashAlz, plaintext);
-                break;
 
             }
 
             else{
 
-                printf("\nNothing was Found");
                 return 0;
 
             }
@@ -63,11 +61,6 @@ char * tryWord(char * plaintext, char * hashFilename)
 
 
     }
-    // Attempt to match the hash from the file to the
-    // hash of the plaintext.
-
-    // If there is a match, you'll return the hash.
-    // If not, return NULL.
 
     free(textHash);
     fclose(hashFile);
@@ -84,51 +77,29 @@ int main(int argc, char *argv[]){
         exit(1);
     }
 
-    FILE *dictionary = fopen(argv[2], "r");
+    // Open the dictionary file for reading.
+    FILE *dictionF = fopen(argv[2], "r");
 
-    while(!feof(dictionary)){
+    // For each dictionary word, pass it to tryWord, which
+    // will attempt to match it against the hashes in the hash_file.
+    while(!feof(dictionF)){
 
-        if(fgets(another, 20, dictionary) != NULL){
+        if(fgets(word, 20, dictionF) != NULL){
 
-            char *nl = strchr(hashAlz, '\n'); 
+            char *nl = strchr(word, '\n'); 
             if (nl) {
 
                 *nl = '\0';
 
             }
 
-            tryWord(another, argv[1]);
-            
+            tryWord(word, argv[1]);
+
         }
 
     }
 
-    fclose(dictionary);
+    fclose(dictionF);
 
 
 }
-    // These two lines exist for testing. When you have
-    // tryWord working, it should display the hash for "hello",
-    // which is 5d41402abc4b2a76b9719d911017c592.
-    // Then you can remove these two lines and complete the rest
-    // of the main function below.
-    //char *found = tryWord("hello", "hashes00.txt");
-    //printf("%s %s\n", found, "hello");
-
-
-    // Open the dictionary file for reading.
-    
-
-    // For each dictionary word, pass it to tryWord, which
-    // will attempt to match it against the hashes in the hash_file.
-    
-    // If we got a match, display the hash and the word. For example:
-    //   5d41402abc4b2a76b9719d911017c592 hello
-    
-    // Close the dictionary file.
-    //fclose(hashFile);
-    //fclose(dictionary);
-    // Display the number of hashes that were cracked.
-    
-    // Free up any malloc'd memory?
-
